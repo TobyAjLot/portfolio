@@ -1,0 +1,237 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Theme Variables ─── */
+:root {
+  /* Light theme — warm parchment */
+  --background: 244 241 232;
+  --surface: 237 233 222;
+  --border-col: 212 207 191;
+  --foreground: 15 15 20;
+  --muted: 107 102 80;
+  --accent: 61 139 0;
+  --accent2: 212 80 10;
+}
+
+.dark {
+  /* Dark theme — deep space */
+  --background: 8 8 13;
+  --surface: 17 17 24;
+  --border-col: 30 30 46;
+  --foreground: 232 228 217;
+  --muted: 107 107 123;
+  --accent: 168 255 62;
+  --accent2: 255 107 53;
+}
+
+/* ─── Base ─── */
+@layer base {
+  * {
+    @apply border-border-col;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    cursor: none;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    font-feature-settings:
+      "kern" 1,
+      "liga" 1;
+  }
+
+  /* Hide default cursor everywhere — custom cursor handles it */
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+
+  /* On touch / coarse-pointer devices, restore default cursor */
+  @media (pointer: coarse) {
+    html {
+      cursor: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      cursor: auto !important;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+}
+
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--accent) / 0.4);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--accent) / 0.8);
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: rgb(var(--accent) / 0.25);
+  color: rgb(var(--foreground));
+}
+
+/* ─── Dot Grid Background ─── */
+.dot-grid {
+  background-image: radial-gradient(
+    circle,
+    rgb(var(--foreground) / 0.07) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+}
+
+/* ─── Glitch animation for hero ─── */
+@keyframes glitch-1 {
+  0%,
+  100% {
+    clip-path: inset(0 0 95% 0);
+    transform: translate(-2px, 0);
+  }
+  20% {
+    clip-path: inset(30% 0 60% 0);
+    transform: translate(2px, 0);
+  }
+  40% {
+    clip-path: inset(70% 0 10% 0);
+    transform: translate(-1px, 0);
+  }
+  60% {
+    clip-path: inset(50% 0 40% 0);
+    transform: translate(1px, 0);
+  }
+  80% {
+    clip-path: inset(10% 0 80% 0);
+    transform: translate(-2px, 0);
+  }
+}
+
+@keyframes glitch-2 {
+  0%,
+  100% {
+    clip-path: inset(80% 0 0 0);
+    transform: translate(2px, 0);
+  }
+  20% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(-2px, 0);
+  }
+  40% {
+    clip-path: inset(50% 0 30% 0);
+    transform: translate(1px, 0);
+  }
+  60% {
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(-1px, 0);
+  }
+  80% {
+    clip-path: inset(60% 0 20% 0);
+    transform: translate(2px, 0);
+  }
+}
+
+.glitch-text {
+  position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.glitch-text::before {
+  color: rgb(var(--accent2));
+  animation: glitch-1 4s infinite linear;
+  opacity: 0.6;
+}
+
+.glitch-text::after {
+  color: rgb(var(--accent));
+  animation: glitch-2 4s infinite linear;
+  opacity: 0.6;
+}
+
+/* ─── Card border trace on hover ─── */
+@keyframes border-trace {
+  0% {
+    clip-path: inset(0 100% 100% 0);
+  }
+  25% {
+    clip-path: inset(0 0 100% 0);
+  }
+  50% {
+    clip-path: inset(0 0 0 100%);
+  }
+  75% {
+    clip-path: inset(100% 0 0 0);
+  }
+  100% {
+    clip-path: inset(0 100% 100% 0);
+  }
+}
+
+/* ─── Orbital animation for stack ─── */
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateX(var(--orbit-r)) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(var(--orbit-r)) rotate(-360deg);
+  }
+}
+
+/* ─── Signal pulse for game button ─── */
+@keyframes signal-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.signal-ring {
+  animation: signal-pulse 1.8s ease-out infinite;
+}
+
+/* ─── Terminal cursor blink ─── */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
